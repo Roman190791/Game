@@ -1,0 +1,104 @@
+- Telegram Bot API
+- TON Blockchain
+- Python / Node.js (залежить від реалізації)
+- Inline Keyboard UX
+
+## Приклад інтерфейсу
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters, CallbackContext
+import logging
+
+# Налаштування логування
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Токен вашого бота
+TOKEN = 7933363751:AAHKXlfZv-FLyihdQiKTMTp6nVS-B0yelKA
+
+def start(update: Update, context: CallbackContext):
+    """Це стартова команда, що активує інтерфейс для користувача"""
+    user = update.message.from_user
+    update.message.reply_text(f"Привіт, {user.first_name}! Готовий майнити Lumis Coin? Натискай 'Майнити' для початку.",
+                              reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Майнити", callback_data='mine')]]))
+
+def mine(update: Update, context: CallbackContext):
+    """Обробляє натискання кнопки майнінгу"""
+    query = update.callback_query
+    query.answer()
+    
+    # Логіка майнінгу: збільшення балансу
+    user_id = query.from_user.id
+    current_balance = get_balance(user_id)  # Функція для отримання балансу з БД
+    new_balance = current_balance + 1  # Збільшення на 1 монету
+    set_balance(user_id, new_balance)  # Функція для оновлення балансу в БД
+    
+    query.edit_message_text(f"Ти майниш Lumis Coin! Твій новий баланс: {new_balance} Lumis Coin.",
+                            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Майнити", callback_data='mine')]]))
+
+def get_balance(user_id):
+    # Логіка для отримання балансу гравця з бази даних або файлу
+    return 0  # Потрібно реалізувати справжню логіку
+
+def set_balance(user_id, balance):
+    # Логіка для збереження балансу в базі даних або файлі
+    pass
+
+def main():
+    """Запуск бота"""
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CallbackQueryHandler(mine, pattern='^mine$'))
+- Telegram Bot API
+- TON Blockchain
+- Python / Node.js (залежить від реалізації)
+- Inline Keyboard UX
+
+## Приклад інтерфейсу
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters, CallbackContext
+import logging
+
+# Налаштування логування
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Токен вашого бота
+TOKEN = 7933363751:AAHKXlfZv-FLyihdQiKTMTp6nVS-B0yelKA
+
+def start(update: Update, context: CallbackContext):
+    """Це стартова команда, що активує інтерфейс для користувача"""
+    user = update.message.from_user
+    update.message.reply_text(f"Привіт, {user.first_name}! Готовий майнити Lumis Coin? Натискай 'Майнити' для початку.",
+                              reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Майнити", callback_data='mine')]]))
+
+def mine(update: Update, context: CallbackContext):
+    """Обробляє натискання кнопки майнінгу"""
+    query = update.callback_query
+    query.answer()
+    
+    # Логіка майнінгу: збільшення балансу
+    user_id = query.from_user.id
+    current_balance = get_balance(user_id)  # Функція для отримання балансу з БД
+    new_balance = current_balance + 1  # Збільшення на 1 монету
+    set_balance(user_id, new_balance)  # Функція для оновлення балансу в БД
+    
+    query.edit_message_text(f"Ти майниш Lumis Coin! Твій новий баланс: {new_balance} Lumis Coin.",
+                            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Майнити", callback_data='mine')]]))
+
+def get_balance(user_id):
+    # Логіка для отримання балансу гравця з бази даних або файлу
+    return 0  # Потрібно реалізувати справжню логіку
+
+def set_balance(user_id, balance):
+    # Логіка для збереження балансу в базі даних або файлі
+    pass
+
+def main():
+    """Запуск бота"""
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CallbackQueryHandler(mine, pattern='^mine$'))
